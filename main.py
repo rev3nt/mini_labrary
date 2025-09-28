@@ -1,7 +1,7 @@
 def book_list_view(library_dict):
     if len(library_dict) != 0:
         for book in library_dict:
-            print(book, library_dict[book])
+            print(book)
     else:
         print('Библиотека пуста')
 
