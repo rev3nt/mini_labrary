@@ -6,8 +6,6 @@ def book_list_view(library_dict):
 
     print('Библиотека пуста')
 
-    return None
-
 
 library = {
     'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': 2021, 'available': True},
