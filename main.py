@@ -1,25 +1,25 @@
 def book_list_view(library_dict):
     if len(library_dict) != 0:
         for book in library_dict:
-            print(book)
+            print(book, library_dict[book])
     else:
-        print('Библиотека пуста')
+        print('\nБиблиотека пуста\n')
 
 
-def add_book(title, author, year):
-    if title in library:
+def add_book(title, author, year, library_dict):
+    if title in library_dict:
         print("Данная книга уже добавлена в библиотеку, хотите изменить информацию о ней(Y/N)? ")
 
         user_answer = input().lower()
 
         if user_answer == 'y':
-            library[title] = {'author': author, 'year': year, 'availability': None}
+            library_dict[title] = {'author': author, 'year': year, 'availability': None}
 
-            print(f'Редактирование книги \"{title}\" прошло успешно!')
+            print(f'\nРедактирование книги \"{title}\" прошло успешно!\n')
     else:
-        library[title] = {'author': author, 'year': year, 'availability': None}
+        library_dict[title] = {'author': author, 'year': year, 'availability': None}
 
-        print(f'Книга \"{title}\" успешно добавлена в библиотеку')
+        print(f'\nКнига \"{title}\" успешно добавлена в библиотеку\n')
 
 
 library = {
@@ -29,10 +29,10 @@ library = {
 
 book_list_view(library)
 
-add_book('Ванпис', 'Эйитиро Ода', 1980)
+add_book('Ванпис', 'Эйитиро Ода', 1980, library)
 
 book_list_view(library)
 
-add_book('Ванпис', 'Хидео Кадзима', 1984)
+add_book('Ванпис', 'Хидео Кадзима', 1984, library)
 
 book_list_view(library)
