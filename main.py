@@ -13,11 +13,11 @@ def add_book(title, author, year, library_dict):
         user_answer = input().lower()
 
         if user_answer == 'y':
-            library_dict[title] = {'author': author, 'year': year, 'availability': None}
+            library_dict[title] = {'author': author, 'publication_year': year, 'available': None}
 
             print(f'\nРедактирование книги \"{title}\" прошло успешно!\n')
     else:
-        library_dict[title] = {'author': author, 'year': year, 'availability': None}
+        library_dict[title] = {'author': author, 'publication_year': year, 'available': None}
 
         print(f'\nКнига \"{title}\" успешно добавлена в библиотеку\n')
 
@@ -55,6 +55,20 @@ def return_book(title,library_dict):
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
 
 
+def find_book(title,library_dict):
+    if title in library_dict:
+        print(f'\"{title}\".\nАвтор: \"{library_dict[title]["author"]}\"')
+
+        print(f'Дата публикации: {library_dict[title]["publication_year"]}')
+
+        if library_dict[title]["available"] is None:
+            print('Книга в библиотеке, но ее статус не определен')
+        else:
+            print(f'{"Книга доступна\n" if library_dict[title]["available"] == True else "Книга выдана\n"}')
+    else:
+        print(f'Книги \"{title}\" нет в базе данных\n')
+
+
 library = {
     'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': 2021, 'available': True},
     'Зеленая миля': {'author': 'Стивен Кинг', 'publication_year': 2025, 'available': False}
@@ -62,14 +76,18 @@ library = {
 
 book_list_view(library)
 
-issue_book('Гарри Поттер и узник Азкабана', library)
+add_book('Преступление и наказание', 'Ф. М. Достоевский', 1866, library)
 
-book_list_view(library)
+add_book('Зеленая миля', 'Стивен Кинг', 2021, library)
 
-return_book('Гарри Поттер и узник Азкабана', library)
+delete_book('Гарри Поттер и узник Азкабана', library)
 
-return_book('Гарри Поттер и узник Азкабана', library)
+find_book('Преступление и наказание', library)
+
+issue_book('Преступление и наказание', library)
 
 return_book('Зеленая миля', library)
+
+issue_book('Преступление и наказание', library)
 
 book_list_view(library)
