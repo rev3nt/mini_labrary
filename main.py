@@ -31,7 +31,7 @@ def delete_book(title, library_dict):
         print(f'\nКниги \"{title}\" нет в библиотеке\n')
 
 
-def issue_book(title,library_dict):
+def issue_book(title, library_dict):
     if title in library_dict:
         if library_dict[title]['available'] is False:
             print(f'\nКнига \"{title}\" уже выдана\n')
@@ -43,7 +43,7 @@ def issue_book(title,library_dict):
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
 
 
-def return_book(title,library_dict):
+def return_book(title, library_dict):
     if title in library_dict:
         if library_dict[title]['available'] is True:
             print(f'\nКнига \"{title}\" уже в библиотеке\n')
@@ -55,39 +55,71 @@ def return_book(title,library_dict):
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
 
 
-def find_book(title,library_dict):
-    if title in library_dict:
-        print(f'\"{title}\".\nАвтор: \"{library_dict[title]["author"]}\"')
-
-        print(f'Дата публикации: {library_dict[title]["publication_year"]}')
-
-        if library_dict[title]["available"] is None:
-            print('Книга в библиотеке, но ее статус не определен')
-        else:
-            print(f'{"Книга доступна\n" if library_dict[title]["available"] == True else "Книга выдана\n"}')
-    else:
+def find_book(title, library_dict):
+    if title not in library_dict:
         print(f'Книги \"{title}\" нет в базе данных\n')
+
+        return
+
+    print(f'\"{title}\"\nАвтор: \"{library_dict[title]["author"]}\"')
+
+    print(f'Дата публикации: {library_dict[title]["publication_year"]}')
+    if library_dict[title]['available'] is None:
+        print('Книга в библиотеке, но ее статус не определен')
+
+        return
+    else:
+        print(f'{"Книга доступна\n" if library_dict[title]["available"] else "Книга выдана\n"}')
+
+        return
 
 
 library = {
-    'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': 2021, 'available': True},
-    'Зеленая миля': {'author': 'Стивен Кинг', 'publication_year': 2025, 'available': False}
+    'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': '2021', 'available': True},
+    'Зеленая миля': {'author': 'Стивен Кинг', 'publication_year': '2025', 'available': False}
 }
 
-book_list_view(library)
+options_dict = {'1': 'Просмотреть полный список книг', '2': 'Добавить/Редактировать книгу','3': 'Удалить книгу',
+                '4': 'Выдать книгу', '5': 'Вернуть книгу', '6': 'Найти книгу' ,'7': 'Выйти из программы'}
 
-add_book('Преступление и наказание', 'Ф. М. Достоевский', 1866, library)
+while True:
+    print()
 
-add_book('Зеленая миля', 'Стивен Кинг', 2021, library)
+    for option in options_dict:
+        print(f'{option}: {options_dict[option]}')
 
-delete_book('Гарри Поттер и узник Азкабана', library)
+    user_input = input('Введите номер опции: ')
 
-find_book('Преступление и наказание', library)
+    print()
 
-issue_book('Преступление и наказание', library)
+    if user_input == '1':
+        book_list_view(library)
+    elif user_input == '2':
+        input_title = input('Введите название добавляемой/редактируемой книги: ')
 
-return_book('Зеленая миля', library)
+        input_author = input('Введите автора книги: ')
 
-issue_book('Преступление и наказание', library)
+        input_year = input('Введите год публикации: ')
 
-book_list_view(library)
+        add_book(input_title, input_author, input_year, library)
+    elif user_input == '3':
+        input_title = input('Введите название книги, которую хотите удалить: ')
+
+        delete_book(input_title, library)
+    elif user_input == '4':
+        input_title = input('Введите название книги для выдачи: ')
+
+        issue_book(input_title, library)
+
+    elif user_input == '5':
+        input_title = input('Введите название книги для возврата: ')
+
+        return_book(input_title, library)
+    elif user_input == '6':
+        input_title = input('Введите название книги для поиска: ')
+
+        find_book(input_title, library)
+    elif user_input == '7':
+        break
+    else:
+        print('Введите опцию из меню!\n')
