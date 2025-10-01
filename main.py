@@ -32,27 +32,29 @@ def delete_book(title, library_dict):
 
 
 def issue_book(title, library_dict):
-    if title in library_dict:
-        if library_dict[title]['available'] is False:
-            print(f'\nКнига \"{title}\" уже выдана\n')
-        else:
-            library_dict[title]['available'] = False
-
-            print(f'\nКнига \"{title}\" была успешно выдана\n')
-    else:
+    if title not in library_dict:
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
+
+        return
+    if library_dict[title]['available']:
+        library_dict[title]['available'] = False
+
+        print(f'\nКнига \"{title}\" была успешно выдана\n')
+    else:
+        print(f'\nКнига \"{title}\" уже выдана\n')
 
 
 def return_book(title, library_dict):
-    if title in library_dict:
-        if library_dict[title]['available'] is True:
-            print(f'\nКнига \"{title}\" уже в библиотеке\n')
-        else:
-            library_dict[title]['available'] = True
-
-            print(f'\nКнига \"{title}\" успешно вернулась в библиотеку\n')
-    else:
+    if title not in library_dict:
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
+
+        return
+    if library_dict[title]['available']:
+        print(f'\nКнига \"{title}\" уже в библиотеке\n')
+    else:
+        library_dict[title]['available'] = True
+
+        print(f'\nКнига \"{title}\" успешно вернулась в библиотеку\n')
 
 
 def find_book(title, library_dict):
@@ -75,33 +77,36 @@ def find_book(title, library_dict):
 
 
 library = {
-    'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': '2021', 'available': True},
-    'Зеленая миля': {'author': 'Стивен Кинг', 'publication_year': '2025', 'available': False}
+    'Гарри Поттер и узник Азкабана': {'author': 'Джоан Роулинг', 'publication_year': 2021, 'available': True},
+    'Зеленая миля': {'author': 'Стивен Кинг', 'publication_year': 2025, 'available': False}
 }
 
-options_dict = {'1': 'Просмотреть полный список книг', '2': 'Добавить/Редактировать книгу','3': 'Удалить книгу',
-                '4': 'Выдать книгу', '5': 'Вернуть книгу', '6': 'Найти книгу' ,'7': 'Выйти из программы'}
+options = '''\n1: Просмотреть полный список книг
+2: Добавить/Редактировать книгу
+3: Удалить книгу
+4: Выдать книгу
+5: Вернуть книгу 
+6: Найти книгу 
+7: Выйти из программы'''
 
 while True:
-    print()
-
-    for option in options_dict:
-        print(f'{option}: {options_dict[option]}')
+    print(options)
 
     user_input = input('Введите номер опции: ')
-
-    print()
 
     if user_input == '1':
         book_list_view(library)
     elif user_input == '2':
-        input_title = input('Введите название добавляемой/редактируемой книги: ')
+        try:
+            input_title = input('Введите название добавляемой/редактируемой книги: ')
 
-        input_author = input('Введите автора книги: ')
+            input_author = input('Введите автора книги: ')
 
-        input_year = input('Введите год публикации: ')
+            input_year = int(input('Введите год публикации: '))
 
-        add_book(input_title, input_author, input_year, library)
+            add_book(input_title, input_author, input_year, library)
+        except ValueError:
+            print('Год введен некорректно')
     elif user_input == '3':
         input_title = input('Введите название книги, которую хотите удалить: ')
 
