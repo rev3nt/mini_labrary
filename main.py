@@ -36,7 +36,7 @@ def issue_book(title, library_dict):
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
 
         return
-    if library_dict[title]['available']:
+    if library_dict[title]['available'] or library_dict[title]['available'] is None:
         library_dict[title]['available'] = False
 
         print(f'\nКнига \"{title}\" была успешно выдана\n')
@@ -87,44 +87,33 @@ options = '''\n1: Просмотреть полный список книг
 4: Выдать книгу
 5: Вернуть книгу 
 6: Найти книгу 
-7: Выйти из программы'''
+7: Выйти из программы\n'''
+
+func_dict = {
+    '1': lambda: book_list_view(library),
+    '2': lambda: add_book(input('Введите название добавляемой/редактируемой книги: '),
+                          input('Введите автора книги: '), int(input('Введите год публикации: ')),library),
+    '3': lambda: delete_book(input('Введите название удаляемой книги: '), library),
+    '4': lambda: issue_book(input('Введите название книги для возврата: '), library),
+    '5': lambda: return_book(input('Введите название книги для выдачи: '), library),
+    '6': lambda: find_book(input('Введите название книги для поиска: '), library),
+}
 
 while True:
     print(options)
 
     user_input = input('Введите номер опции: ')
 
-    if user_input == '1':
-        book_list_view(library)
-    elif user_input == '2':
-        try:
-            input_title = input('Введите название добавляемой/редактируемой книги: ')
-
-            input_author = input('Введите автора книги: ')
-
-            input_year = int(input('Введите год публикации: '))
-
-            add_book(input_title, input_author, input_year, library)
-        except ValueError:
-            print('Год введен некорректно')
-    elif user_input == '3':
-        input_title = input('Введите название книги, которую хотите удалить: ')
-
-        delete_book(input_title, library)
-    elif user_input == '4':
-        input_title = input('Введите название книги для выдачи: ')
-
-        issue_book(input_title, library)
-
-    elif user_input == '5':
-        input_title = input('Введите название книги для возврата: ')
-
-        return_book(input_title, library)
-    elif user_input == '6':
-        input_title = input('Введите название книги для поиска: ')
-
-        find_book(input_title, library)
-    elif user_input == '7':
+    if user_input == '7':
         break
+
+    if user_input in func_dict:
+        try:
+            func_dict[user_input]()
+        except ValueError:
+            print('Год введен некорректно!')
+
+        except Exception as e:
+            print(f'Ошибка: {e}')
     else:
         print('Введите опцию из меню!\n')
