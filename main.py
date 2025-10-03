@@ -36,7 +36,7 @@ def issue_book(title, library_dict):
         print(f'\nКниги \"{title}\" нет в базе библиотеки\n')
 
         return
-    if library_dict[title]['available'] or library_dict[title]['available'] is None:
+    if not library_dict[title]['available']:
         library_dict[title]['available'] = False
 
         print(f'\nКнига \"{title}\" была успешно выдана\n')
@@ -112,8 +112,5 @@ while True:
             func_dict[user_input]()
         except ValueError:
             print('Год введен некорректно!')
-
-        except Exception as e:
-            print(f'Ошибка: {e}')
     else:
         print('Введите опцию из меню!\n')
